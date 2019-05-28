@@ -1,7 +1,8 @@
 from PyPDF2 import PdfFileReader
 import os
 from time import sleep
-
+import re
+import xlsxwriter
 
 def get_pdfs():
 	list_pwd = os.listdir()
@@ -38,6 +39,7 @@ def get_info(l_pdfs):
 					else:
 						current_owner.append(content[cont - c])
 					c += 1
+				
 			if content[cont] == "Owner Phone":
 				phone, email = [content[cont+3], content[cont+4]]
 				#print(f"Phone at position: {cont}")
@@ -57,6 +59,7 @@ def get_info(l_pdfs):
 						else:
 							current_owner.append(content[c + x])
 						x += 1
+
 		if current_owner[0].split(',')[0].isdigit() == True and current_owner[0].split(',')[-1].isdigit() == True:
 			#print("CURRENT OWNER is bad, finding new value")
 			current_owner = []
@@ -64,6 +67,7 @@ def get_info(l_pdfs):
 				if content[o] == 'Use Co':
 					for n in range(8, 10):
 						current_owner.append(content[o+n])
+
 		if property_location == 'Rolling':
 			#print("Property location is Rolling Finding new value...")
 			for c in range(len(content)):
@@ -76,13 +80,20 @@ def get_info(l_pdfs):
 			#print(f'Found new value Map ID: {property_location}')
 		if property_location == '1':
 			property_location = content[-2]
-		print(f"Property location: {property_location}\nCurrent owner: {current_owner}\nPhone, Email: {phone}, {email}\nTotal: {total}")
+		for l in current_owner:
+			bb = re.findall('[0-9]+', l)
+			if len(bb)>0:
+				address = l
+			else:
+				name = l
+		print(f"Property location: {property_location}\nCurrent owner: name {name}, address: {address}\nPhone, Email: {phone}, {email}\nTotal: {total}")
 		pdfFileOb.close()
 		#sleep(10)
-		#return property_location
+		return property_location, name, address, phone, email, total 
 
 
-def create_excel():
+def create_excel(pl, n, a, p, e, t):
+
 	pass
 
 
