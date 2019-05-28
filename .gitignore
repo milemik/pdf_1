@@ -9,3 +9,6 @@ output.txt
 
 # download script
 download.py
+
+# ignore xlsx files
+*.xlsx
