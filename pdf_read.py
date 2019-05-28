@@ -13,6 +13,7 @@ def get_pdfs():
 	return list_pdfs
 
 def get_info(l_pdfs):
+	lista = []
 	for doc in range(len(l_pdfs)):
 		print(30* "==")
 		pdfFileOb = open(l_pdfs[doc], 'rb')
@@ -88,17 +89,39 @@ def get_info(l_pdfs):
 				name = l
 		print(f"Property location: {property_location}\nCurrent owner: name {name}, address: {address}\nPhone, Email: {phone}, {email}\nTotal: {total}")
 		pdfFileOb.close()
+		lista.append([property_location, name, address, phone, email, total])
 		#sleep(10)
-		return property_location, name, address, phone, email, total 
+	#print(lista)
+	return lista
 
 
-def create_excel(pl, n, a, p, e, t):
+def create_excel(li):
+	workbook = xlsxwriter.Workbook('data.xlsx')
+	worksheet = workbook.add_worksheet()
+	bold = workbook.add_format({'bold': True})
+	worksheet.write('A1', 'Property ID', bold)
+	worksheet.write('B1', 'Name', bold)
+	worksheet.write('C1', 'Address', bold)
+	worksheet.write('D1', 'Phone', bold)
+	worksheet.write('E1', 'Email', bold)
+	worksheet.write('F1', 'Total', bold)
 
-	pass
+	row = 1
+	col = 0
 
+	for pl, nam, add, ph, em, tot in li:
+		worksheet.write(row, col, pl)
+		worksheet.write(row, col+1, nam)
+		worksheet.write(row, col+2, add)
+		worksheet.write(row, col+3, ph)
+		worksheet.write(row, col+4, em)
+		worksheet.write(row, col+5, tot)
+		row+=1
+	workbook.close()
 
 def main():
 	pdfs = get_pdfs()
-	get_info(pdfs)
+	l = get_info(pdfs)
+	create_excel(l)
 
 main()
