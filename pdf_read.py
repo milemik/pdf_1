@@ -66,6 +66,13 @@ def get_info(l_pdfs):
 						except ValueError:
 							x+=1
 							current_owner.append(content[c-x])
+		if 'SALE PRICE' in current_owner:
+			print("CURRENT OWNER is bad, finding new value")
+			current_owner = []
+			for o in range(len(content)):
+				if content[o] == 'Use Co':
+					for n in range(8, 10):
+						current_owner.append(content[o+n])
 			print(f'Found new value {property_location}')
 		if property_location == 'Rolling':
 			print("Property location is Rolling Finding new value...")
@@ -76,7 +83,7 @@ def get_info(l_pdfs):
 		#print(f"On position 218 is: {content[218]}")
 		print(f"Property location: {property_location}\nCurrent owner: {current_owner}\nPhone, Email: {phone}, {email}\nTotal: {total}")
 		pdfFileOb.close()
-		sleep(10)
+		#sleep(10)
 
 
 def main():
