@@ -1,0 +1,5 @@
+# gitignore all pdfs
+*.pdf
+
+# gitingore pdf_links.txt
+pdf_links.txt
