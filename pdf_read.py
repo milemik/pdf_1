@@ -37,7 +37,10 @@ def get_info(l_pdfs):
 				print(f"Content Owner at position : {cont}")
 				for c in range(0, 5):
 					#current_owner = f"{content[cont-4]} {content[cont-3]} {content[cont-2]} {content[cont-1]}"
-					current_owner.append(content[cont+c])
+					try:
+						int(content[cont+c])
+					except ValueError:
+						current_owner.append(content[cont+c])
 					'''
 					if content[cont+c].isdigit():
 						break
@@ -50,14 +53,19 @@ def get_info(l_pdfs):
 				total = content[cont+1] # Assessed
 				if total == 'CURRENT ASSESSMENT':
 					total = content[cont-1]
-				print(f"Total at position: {cont}")
 		if 'TOPO.' in current_owner:
 			print("current_owner is bad Finding new value...")
 			current_owner = []
 			for c in range(len(content)):
 				if content[c] == 'Additional Owners:':
-					for x in range(0,5):
-						current_owner.append(content[c-x])
+					x= 0
+					while x < 5:
+						try:
+							int(content[c-x])
+							pass
+						except ValueError:
+							x+=1
+							current_owner.append(content[c-x])
 			print(f'Found new value {property_location}')
 		if property_location == 'Rolling':
 			print("Property location is Rolling Finding new value...")
@@ -65,7 +73,7 @@ def get_info(l_pdfs):
 				if content[c] == 'Map ID':
 					property_location = content[c+1]
 			print(f'Found new value {property_location}')
-		
+		#print(f"On position 218 is: {content[218]}")
 		print(f"Property location: {property_location}\nCurrent owner: {current_owner}\nPhone, Email: {phone}, {email}\nTotal: {total}")
 		pdfFileOb.close()
 		sleep(10)

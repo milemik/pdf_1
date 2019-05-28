@@ -3,3 +3,9 @@
 
 # gitingore pdf_links.txt
 pdf_links.txt
+
+# ignore output for testing
+output.txt
+
+# download script
+download.py
