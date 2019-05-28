@@ -76,17 +76,27 @@ def get_info(l_pdfs):
 				if content[o] == 'Use Co':
 					for n in range(8, 10):
 						current_owner.append(content[o+n])
-			print(f'Found new value {property_location}')
+			#print(f'Found new value {property_location}')
 		if property_location == 'Rolling':
 			print("Property location is Rolling Finding new value...")
 			for c in range(len(content)):
 				if content[c] == 'Map ID':
 					property_location = content[c+1]
-			print(f'Found new value {property_location}')
+		if property_location == 'Assessed Value':
+			for j in range(len(content)):
+				if content[j] == 'Property Location:':
+					property_location = content[j+1]
+			print(f'Found new value Map ID: {property_location}')
+		if property_location == '1':
+			property_location = content[-2]
 		#print(f"On position 218 is: {content[218]}")
 		print(f"Property location: {property_location}\nCurrent owner: {current_owner}\nPhone, Email: {phone}, {email}\nTotal: {total}")
 		pdfFileOb.close()
 		#sleep(10)
+
+
+def create_excel():
+	pass
 
 
 def main():
