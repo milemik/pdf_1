@@ -32,15 +32,18 @@ def get_info(l_pdfs):
 				property_location = content[cont-1]# 'Property Location'
 				print(f"Property Location at position: {cont}")
 			#if content[cont] == "Additional Owners:":
-			if content[cont] == "CURRENT OWNER":
+			#if content[cont] == "CURRENT OWNER":
+			if content[cont] == "Assoc Pid#":
 				current_owner = []
 				print(f"Content Owner at position : {cont}")
-				for c in range(0, 5):
+				c = 1
+				while c < 3:
 					#current_owner = f"{content[cont-4]} {content[cont-3]} {content[cont-2]} {content[cont-1]}"
-					try:
-						int(content[cont+c])
-					except ValueError:
-						current_owner.append(content[cont+c])
+					if content[cont - c].isdigit() == True:
+						pass
+					else:
+						current_owner.append(content[cont - c])
+					c += 1
 					'''
 					if content[cont+c].isdigit():
 						break
@@ -58,15 +61,15 @@ def get_info(l_pdfs):
 			current_owner = []
 			for c in range(len(content)):
 				if content[c] == 'Additional Owners:':
-					x= 0
+					x = 0
 					while x < 5:
-						try:
-							int(content[c-x])
+					#current_owner = f"{content[cont-4]} {content[cont-3]} {content[cont-2]} {content[cont-1]}"
+						if content[c + x].isdigit() == True:
 							pass
-						except ValueError:
-							x+=1
-							current_owner.append(content[c-x])
-		if 'SALE PRICE' in current_owner:
+						else:
+							current_owner.append(content[c + x])
+						x += 1
+		if current_owner[0].split(',')[0].isdigit() == True and current_owner[0].split(',')[-1].isdigit() == True:
 			print("CURRENT OWNER is bad, finding new value")
 			current_owner = []
 			for o in range(len(content)):
