@@ -12,7 +12,6 @@ def get_pdfs():
 	return list_pdfs
 
 def get_info(l_pdfs):
-	#doc = 4
 	for doc in range(len(l_pdfs)):
 		print(30* "==")
 		pdfFileOb = open(l_pdfs[doc], 'rb')
@@ -20,65 +19,53 @@ def get_info(l_pdfs):
 		print(f"Opening {l_pdfs[doc]}")
 		page_1 = pwf_reader.getPage(0)
 		con = page_1.extractText()
-		#page_2 = pwf_reader.getPage(1).getObject().extractText()
-		#page_3 = pwf_reader.getPage(2).getObject().extractText()
 
 		content = con.split('\n')
-		print(content)
+		#print(content)
 		phone = 'No phone'
 		email = 'No email'
 		for cont in range(len(content)):
 			if content[cont] == 'SUPPLEMENTAL DATA':
-				property_location = content[cont-1]# 'Property Location'
-				print(f"Property Location at position: {cont}")
-			#if content[cont] == "Additional Owners:":
-			#if content[cont] == "CURRENT OWNER":
+				property_location = content[cont-1]
+				#print(f"Property Location at position: {cont}")
 			if content[cont] == "Assoc Pid#":
 				current_owner = []
-				print(f"Content Owner at position : {cont}")
+				#print(f"Content Owner at position : {cont}")
 				c = 1
 				while c < 3:
-					#current_owner = f"{content[cont-4]} {content[cont-3]} {content[cont-2]} {content[cont-1]}"
 					if content[cont - c].isdigit() == True:
 						pass
 					else:
 						current_owner.append(content[cont - c])
 					c += 1
-					'''
-					if content[cont+c].isdigit():
-						break
-					'''
 			if content[cont] == "Owner Phone":
 				phone, email = [content[cont+3], content[cont+4]]
-				print(f"Phone at position: {cont}")
-			if content[cont] == "Assessed":  # Assessed
-				#total = content[cont+2] # total
-				total = content[cont+1] # Assessed
+				#print(f"Phone at position: {cont}")
+			if content[cont] == "Assessed":
+				total = content[cont+1]
 				if total == 'CURRENT ASSESSMENT':
 					total = content[cont-1]
 		if 'TOPO.' in current_owner:
-			print("current_owner is bad Finding new value...")
+			#print("current_owner is bad Finding new value...")
 			current_owner = []
 			for c in range(len(content)):
 				if content[c] == 'Additional Owners:':
 					x = 0
 					while x < 5:
-					#current_owner = f"{content[cont-4]} {content[cont-3]} {content[cont-2]} {content[cont-1]}"
 						if content[c + x].isdigit() == True:
 							pass
 						else:
 							current_owner.append(content[c + x])
 						x += 1
 		if current_owner[0].split(',')[0].isdigit() == True and current_owner[0].split(',')[-1].isdigit() == True:
-			print("CURRENT OWNER is bad, finding new value")
+			#print("CURRENT OWNER is bad, finding new value")
 			current_owner = []
 			for o in range(len(content)):
 				if content[o] == 'Use Co':
 					for n in range(8, 10):
 						current_owner.append(content[o+n])
-			#print(f'Found new value {property_location}')
 		if property_location == 'Rolling':
-			print("Property location is Rolling Finding new value...")
+			#print("Property location is Rolling Finding new value...")
 			for c in range(len(content)):
 				if content[c] == 'Map ID':
 					property_location = content[c+1]
@@ -86,10 +73,9 @@ def get_info(l_pdfs):
 			for j in range(len(content)):
 				if content[j] == 'Property Location:':
 					property_location = content[j+1]
-			print(f'Found new value Map ID: {property_location}')
+			#print(f'Found new value Map ID: {property_location}')
 		if property_location == '1':
 			property_location = content[-2]
-		#print(f"On position 218 is: {content[218]}")
 		print(f"Property location: {property_location}\nCurrent owner: {current_owner}\nPhone, Email: {phone}, {email}\nTotal: {total}")
 		pdfFileOb.close()
 		#sleep(10)
@@ -104,18 +90,3 @@ def main():
 	get_info(pdfs)
 
 main()
-'''
-print(30* "==")
-print(page_2)
-print(30* "==")
-print(page_3)
-print(30* "==")
-'''
-### WE NEED property location:     "Property Location:" +1
-
-
-## WE NEED CURRENT OWNER  "CURRENT OWNER" 4 fields before"Additional Owners:"
-
-#WE NEED OWNER PHONE, MAIL "Owner Phone" , "Owner Email" +3 PHONE +4 EMAIL
-
-# FROM CURRENT ASSESSMENT we need :Total one before 'Appraised Bldg. Value (Card)' OR AFTER 'Total'
