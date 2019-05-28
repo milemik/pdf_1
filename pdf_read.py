@@ -79,6 +79,7 @@ def get_info(l_pdfs):
 		print(f"Property location: {property_location}\nCurrent owner: {current_owner}\nPhone, Email: {phone}, {email}\nTotal: {total}")
 		pdfFileOb.close()
 		#sleep(10)
+		#return property_location
 
 
 def create_excel():
