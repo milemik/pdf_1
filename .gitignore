@@ -12,3 +12,9 @@ download.py
 
 # ignore xlsx files
 *.xlsx
+
+#ignore this dir: pdf_reader
+/pdf_reader
+
+#ignore zip file
+pdf_reader.zip

@@ -5,7 +5,7 @@ import re
 import xlsxwriter
 
 def get_pdfs():
-	list_pwd = os.listdir()
+	list_pwd = os.listdir(os.path.join(os.getcwd(), 'pdfs'))
 	list_pdfs = []
 	for d in list_pwd:
 	    if d.endswith(".pdf"):
@@ -16,7 +16,7 @@ def get_info(l_pdfs):
 	lista = []
 	for doc in range(len(l_pdfs)):
 		print(30* "==")
-		pdfFileOb = open(l_pdfs[doc], 'rb')
+		pdfFileOb = open(os.path.join(os.getcwd(), f'pdfs/{l_pdfs[doc]}'), 'rb')
 		pwf_reader = PdfFileReader(pdfFileOb)
 		print(f"Opening {l_pdfs[doc]}")
 		page_1 = pwf_reader.getPage(0)
